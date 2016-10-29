@@ -1,0 +1,15 @@
+###################################################################
+# This is an ansible role to configure phpmyadmin
+###################################################################
+---
+        
+###################
+# Database
+# By default msql is installed without any password !!!!
+###################    
+- name: setup phpmyadmin
+  file:
+    src: /usr/share/phpmyadmin/
+    dest: /var/www/html/phpmyadmin
+    state: link
+        

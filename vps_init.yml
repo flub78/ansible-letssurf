@@ -1,0 +1,60 @@
+###################################################################
+# This is an ansible playbook tutorial
+# ansible-playbook vps_init.yml
+#
+# Note: on ubuntu 14.05 php packages are named php5, on version >= 16 php
+###################################################################
+---
+- hosts: ansible
+  remote_user: root
+
+  vars:
+    # Username
+    user: "{{ansible_env.USER}}"
+    # Timezone
+    timezone: 'Europe/Paris'
+    mylist: ['belo', 'ratus']
+
+  pre_tasks:
+
+    ###################
+    # User Management
+    ###################   
+    - name: Make sure we have a 'wheel' group
+      group:
+       name: wheel
+       state: present
+       
+    - name: Create user {{ user }}
+      user: name={{ user }} groups=wheel append=yes state=present createhome=yes
+            comment="{{ user }} user"
+            shell=/bin/bash
+
+    - name: Install list of packages
+      apt: name={{item}} state=installed
+      with_items:
+        - php5
+        - mysql-server
+        - libapache2-mod-php5 
+        - php5-mysql
+        - phpmyadmin
+        - ntpdate
+        
+    ###################
+    # Services
+    ###################   
+    - name: make sure apache is running
+      service: name=apache2 state=started
+          
+    - name: make sure mysql is running
+      service: name=mysql state=started  
+    
+  roles:
+    - role: phpmyadmin
+          
+  ###################
+  # Handlers
+  ###################
+  handlers:
+    - name: restart supervisor
+      service: name=supervisor state=restarted enabled=yes
