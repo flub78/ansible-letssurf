@@ -44,6 +44,8 @@
     
     - name: enabled mod_rewrite
       apache2_module: name=rewrite state=present
+      notify:
+        - restart apache2
     
     ###################
     # Services
@@ -62,5 +64,5 @@
   # Handlers
   ###################
   handlers:
-    - name: restart supervisor
-      service: name=supervisor state=restarted enabled=yes
+    - name: restart apache2
+      service: name=apache2 state=restarted enabled=yes

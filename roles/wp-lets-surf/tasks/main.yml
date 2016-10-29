@@ -1,5 +1,5 @@
 ###################################################################
-# This is an ansible role to configure a wordpress site
+# This is an ansible role to configure a wordpress sitedb535518423.sql
 ###################################################################
 ---
         
@@ -7,5 +7,23 @@
   copy:
     src: etc/apache2/sites-available/lets-surf.conf
     dest: /etc/apache2/sites-available/lets-surf.conf
+    
+- name: extract wp directory
+  unarchive: 
+    src: lets-surf.tgz
+    dest: /var/www/html
 
-        
+- name: copy DB data
+  copy:
+    src: db535518423.sql
+    dest: /tmp    
+
+- name: copy database creation script
+  copy:
+    src: create_db.sql
+    dest: /tmp    
+
+- name: a2ensite lets-surf
+  command: a2ensite lets-surf
+  args:
+    creates: /etc/apache2/sites-enabled/lets-surf.conf
