@@ -3,6 +3,8 @@
 # ansible-playbook vps_init.yml
 #
 # Note: on ubuntu 14.05 php packages are named php5, on version >= 16 php
+# hosts: lets-surf
+# hosts: ansible
 ###################################################################
 ---
 - hosts: ansible
@@ -39,7 +41,10 @@
         - php5-mysql
         - phpmyadmin
         - ntpdate
-        
+    
+    - name: enabled mod_rewrite
+      apache2_module: name=rewrite state=present
+    
     ###################
     # Services
     ###################   
@@ -51,6 +56,7 @@
     
   roles:
     - role: phpmyadmin
+    - role: wp-lets-surf
           
   ###################
   # Handlers

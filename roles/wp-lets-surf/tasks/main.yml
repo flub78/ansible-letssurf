@@ -1,0 +1,11 @@
+###################################################################
+# This is an ansible role to configure a wordpress site
+###################################################################
+---
+        
+- name: copy lets-surf
+  copy:
+    src: etc/apache2/sites-available/lets-surf.conf
+    dest: /etc/apache2/sites-available/lets-surf.conf
+
+        

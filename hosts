@@ -10,21 +10,11 @@
 
 # Ex 1: Ungrouped hosts, specify before any group headers.
 
-#green.example.com
-#blue.example.com
-#192.168.100.1
-#192.168.100.10
-
-# Ex 2: A collection of hosts belonging to the 'webservers' group
-
-[webservers]
-root@lets-surf.com
-
 [lets-surf]
-root@lets-surf.com
+lets-surf.com ansible_user=root
 
 [ansible]
-root@ansible
+172.18.0.100 ansible_user=root
 
 #alpha.example.org
 #beta.example.org
