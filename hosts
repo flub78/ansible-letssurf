@@ -16,6 +16,10 @@ lets-surf.com ansible_user=root
 [ansible]
 172.18.0.100 ansible_user=root
 
+[web]
+lets-surf.com ansible_user=root
+172.18.0.100 ansible_user=root
+
 #alpha.example.org
 #beta.example.org
 #192.168.1.100

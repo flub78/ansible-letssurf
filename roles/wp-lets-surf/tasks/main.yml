@@ -1,29 +1,59 @@
 ###################################################################
-# This is an ansible role to configure a wordpress sitedb535518423.sql
+# This is an ansible role to configure a wordpress site
 ###################################################################
 ---
         
-- name: copy lets-surf
+- name: copy lets-surf apache site
   copy:
     src: etc/apache2/sites-available/lets-surf.conf
     dest: /etc/apache2/sites-available/lets-surf.conf
     
-- name: extract wp directory
+- stat: path={{ site_dir}}
+  register: site
+    
+- name: extract wp directory tarball
   unarchive: 
     src: lets-surf.tgz
     dest: /var/www/html
+    group: www-data
+    owner: www-data
+  when: not site.stat.exists
+    
+- name: rename to lets-surf
+  command: mv /var/www/html/app535480901 {{ site_dir }}
+  when: not site.stat.exists
+  
+- name: configure database variable in "{{config_file}}"
+  command: echo {{ db_name }}
+  
+- lineinfile: dest={{config_file}} regexp=DB_NAME line="define('DB_NAME', '{{db_name}}');"
+- lineinfile: dest={{config_file}} regexp=DB_USER line="define('DB_USER', '{{db_user}}');"
+- lineinfile: dest={{config_file}} regexp=DB_PASSWORD line="define('DB_PASSWORD', '{{db_password}}');"
+- lineinfile: dest={{config_file}} regexp=DB_HOST line="define('DB_HOST', '{{db_host}}');"
 
+- name: copy database creation script
+  template:
+    src: create_db.sql
+    dest: /tmp    
+
+- name: create the database {{db_name}}
+  mysql_db: name={{db_name}} state=present encoding=utf8
+
+- name: create user {{db_user}}
+  mysql_user: name={{db_user}} password={{db_password}} priv={{db_name}}.*:ALL state=present
+  
 - name: copy DB data
   copy:
     src: db535518423.sql
     dest: /tmp    
 
-- name: copy database creation script
-  copy:
-    src: create_db.sql
-    dest: /tmp    
+- mysql_db: state=import name={{db_name}} target=/tmp/db535518423.sql
+
 
 - name: a2ensite lets-surf
   command: a2ensite lets-surf
   args:
     creates: /etc/apache2/sites-enabled/lets-surf.conf
+  notify:
+    - restart apache2
+    

@@ -1,39 +1,42 @@
 ###################################################################
 # This is an ansible playbook tutorial
-# ansible-playbook vps_init.yml
+# ansible-playbook -i hosts vps_init.yml
+# ansible-playbook -i hosts -l ansible vps_init.yml
 #
 # Note: on ubuntu 14.05 php packages are named php5, on version >= 16 php
+# requires an ansible version > 2.0 (tested on 2.2.0.0)
 # hosts: lets-surf
 # hosts: ansible
 ###################################################################
 ---
-- hosts: ansible
+- hosts: web
   remote_user: root
 
   vars:
     # Username
     user: "{{ansible_env.USER}}"
-    # Timezone
-    timezone: 'Europe/Paris'
-    mylist: ['belo', 'ratus']
 
   pre_tasks:
 
     ###################
-    # User Management
+    # Modules installation
     ###################   
     - name: Make sure we have a 'wheel' group
       group:
        name: wheel
        state: present
        
-    - name: Create user {{ user }}
+    - name: Create linux user {{ user }}
       user: name={{ user }} groups=wheel append=yes state=present createhome=yes
             comment="{{ user }} user"
             shell=/bin/bash
 
+    - name: apt-get update cache
+      apt:
+        update_cache: yes
+        
     - name: Install list of packages
-      apt: name={{item}} state=installed
+      apt: name={{item}} state=installed 
       with_items:
         - php5
         - mysql-server
@@ -41,7 +44,16 @@
         - php5-mysql
         - phpmyadmin
         - ntpdate
-    
+        - python-setuptools
+        - libmysqlclient-dev
+        - python-dev
+
+    - name: install pip, the python installer
+      command: easy_install pip
+
+    - name: Install the Python MySQLB module
+      pip: name=MySQL-python
+      
     - name: enabled mod_rewrite
       apache2_module: name=rewrite state=present
       notify:
@@ -54,7 +66,16 @@
       service: name=apache2 state=started
           
     - name: make sure mysql is running
-      service: name=mysql state=started  
+      service: 
+        name: mysql
+        state: restarted
+        
+    - name: workaround on ansible bug
+      command: service mysql start  
+
+  #################  
+  # Role activation
+  #################
     
   roles:
     - role: phpmyadmin
@@ -65,4 +86,7 @@
   ###################
   handlers:
     - name: restart apache2
-      service: name=apache2 state=restarted enabled=yes
+      service: 
+        name: apache2
+        state: restarted
+        enabled: yes

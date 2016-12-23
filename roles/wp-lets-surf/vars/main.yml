@@ -1,0 +1,12 @@
+
+# WEB variables
+site_dir: /var/www/html/lets-surf
+config_file: "{{ site_dir }}/wp-config.php"
+
+# Database variables
+db_name: letsurf_db
+db_user: letssurf_user
+db_password: 6wHsMezU
+db_host: localhost
+
+
