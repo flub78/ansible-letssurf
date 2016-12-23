@@ -15,6 +15,8 @@ requires an ansible version > 2.0 (tested on 2.2.0.0)
 
 2) start the ansible playbook to setup lets-surf.com
 
+  export ANSIBLE_NOCOWS=1
+
   # to check that the target is reachable
   ansible -i hosts -m ping ansible
 
