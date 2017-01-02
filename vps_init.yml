@@ -62,15 +62,15 @@
     ###################
     # Services
     ###################   
-    - name: make sure apache is running
-      service: name=apache2 state=started
+#    - name: make sure apache is running
+#      service: name=apache2 state=started
           
     - name: make sure mysql is running
       service: 
         name: mysql
         state: restarted
         
-    - name: workaround on ansible bug
+    - name: workaround on ansible bug to start mysql
       command: service mysql start  
 
   #################  
@@ -86,7 +86,5 @@
   ###################
   handlers:
     - name: restart apache2
-      service: 
-        name: apache2
-        state: restarted
-        enabled: yes
+      shell: echo "restart apache"
+#      service: name=apache2 state=restarted enabled=yes

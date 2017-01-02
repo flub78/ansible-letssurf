@@ -31,7 +31,9 @@ requires an ansible version > 2.0 (tested on 2.2.0.0)
 Test
 ----
 
-After installation the server answer to http://www.lets-surf.comif it is a local test on a docker container, resolve the domain name in /etc/hosts
+After installation the server answer to http://www.lets-surf.com
+
+if it is a local test on a docker container, resolve the domain name in /etc/hosts
 172.18.0.100    ctnr.lets-surf.com lets-surf.com www.lets-surf.com
 
 

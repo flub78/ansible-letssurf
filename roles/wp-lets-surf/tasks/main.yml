@@ -11,7 +11,7 @@
 - stat: path={{ site_dir}}
   register: site
     
-- name: extract wp directory tarball
+- name: copy wp directory tarball
   unarchive: 
     src: lets-surf.tgz
     dest: /var/www/html
