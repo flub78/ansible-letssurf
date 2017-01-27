@@ -1,0 +1,19 @@
+###################################################################
+# This is an ansible playbook tutorial
+# ansible-playbook -i hosts multiple.yml
+#
+# This is a master playbook executing different roles on different hosts
+# for the purpose of the exercise, let's say that we can access to one host name ansible
+# ansible -i hosts -m ping ansible
+# and localhost
+# ansible all -l localhost -c local -m shell -a 'echo hello world'
+# ansible-playbook -i hosts multiple.yml
+###################################################################
+---
+- hosts: localhost
+  tasks:
+    - shell: echo "hello world"
+    
+- hosts: ansible
+  tasks:
+    - shell: echo "hello container"
