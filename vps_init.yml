@@ -62,8 +62,8 @@
     ###################
     # Services
     ###################   
-#    - name: make sure apache is running
-#      service: name=apache2 state=started
+    - name: make sure apache is running
+      service: name=apache2 state=started
           
     - name: make sure mysql is running
       service: 
@@ -79,7 +79,7 @@
     
   roles:
     - role: phpmyadmin
-    - role: wp-lets-surf
+#    - role: wp-lets-surf
           
   ###################
   # Handlers

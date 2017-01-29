@@ -1,4 +1,4 @@
-Ansible scripts to setup lets-surf
+# Ansible scripts to setup lets-surf
 
 requires an ansible version > 2.0 (tested on 2.2.0.0)
 
@@ -21,11 +21,15 @@ requires an ansible version > 2.0 (tested on 2.2.0.0)
   ansible -i hosts -m ping ansible
 
   # to launch the playbook
-	ansible-playbook -i hosts -l ansible vps_init.yml
+  ansible-playbook -i hosts -l ansible vps_init.yml
 	
 3) check the WEB server in the container
 
 	http://172.18.0.100/
+	
+4) start the container to restart from scratch
+
+    docker rm -f ansible
 	
 
 Test
