@@ -49,6 +49,10 @@
 
 - mysql_db: state=import name={{db_name}} target=/tmp/db535518423.sql
 
+- name: a2dissite 000-default
+  command: a2dissite 000-default
+  notify:
+    - restart apache2
 
 - name: a2ensite lets-surf
   command: a2ensite lets-surf

@@ -79,12 +79,12 @@
     
   roles:
     - role: phpmyadmin
-#    - role: wp-lets-surf
+    - role: wp-lets-surf
           
   ###################
   # Handlers
   ###################
   handlers:
     - name: restart apache2
-      shell: echo "restart apache"
-#      service: name=apache2 state=restarted enabled=yes
+#      shell: echo "restart apache"
+      service: name=apache2 state=restarted enabled=yes
